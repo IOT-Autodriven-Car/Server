@@ -1,0 +1,11 @@
+.venv
+venv
+*.pyc
+dist
+.env
+docker-compose.yml
+docker.env
+Dockerfile
+oidc.key
+debug.log
+.vscode

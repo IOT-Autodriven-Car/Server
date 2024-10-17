@@ -9,3 +9,4 @@ Dockerfile
 oidc.key
 debug.log
 .vscode
+backend/lane_detection/service/model_iou

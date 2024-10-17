@@ -28,13 +28,14 @@ APP_NAME = (
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = (
-    os.environ["SECRET_KEY"] if "SECRET_KEY" in os.environ else env("SECRET_KEY")
+    os.environ["SECRET_KEY"] if "SECRET_KEY" in os.environ else env(
+        "SECRET_KEY")
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'cloudinary_storage',
     'django.contrib.staticfiles',
+    'channels',
     'cloudinary',
     'oauth',
     'lane_detection',
@@ -81,6 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 
 
 # Database
@@ -89,7 +92,7 @@ DB_NAME = os.environ["DB_NAME"] if "DB_NAME" in os.environ else env("DB_NAME")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-         "NAME": DB_NAME,
+        "NAME": DB_NAME,
         "USER": os.environ["DB_USER"] if "DB_USER" in os.environ else env("DB_USER"),
         "PASSWORD": (
             os.environ["DB_PASSWORD"]
@@ -154,5 +157,5 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'D0yqAs9jqnBghC68kM2Pmk-ijVo'
 }
 
-DEFAULT_FILE_STORAGE= 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticHashedCloudinaryStorage'

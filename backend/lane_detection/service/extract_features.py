@@ -66,14 +66,14 @@ def find_boundary_neighbors(labels):
 
 #     return closest_zero_coord
 
-def find_optimal_point(tensor):
-    height, width = tensor.shape
+def find_optimal_point(tensor, y_roadmin = 0):
+    # height, width = tensor.shape
     # Bước 1: Tìm các tọa độ (x, y) có giá trị 0 và giá trị từ (x;y+1) đến (x;y+3) bằng 1 hoặc 2
-    condition_1 = (tensor[:, :-3] == 0) & (
-        ((tensor[:, 1:-2] == 1) | (tensor[:, 1:-2] == 2)) &
-        ((tensor[:, 2:-1] == 1) | (tensor[:, 2:-1] == 2)) &
-        ((tensor[:, 3:] == 1) | (tensor[:, 3:] == 2))
+    condition_1 = (tensor[:-3, :] == 0) & (
+        ((tensor[1:-2, :] == 1) | (tensor[1:-2, :] == 2)) &
+        ((tensor[2:-1, :] == 1) | (tensor[2:-1, :] == 2))
     )
+
 
     # Tọa độ thỏa mãn điều kiện bước 1
     y_coords, x_coords = torch.nonzero(condition_1, as_tuple=True)
@@ -81,25 +81,39 @@ def find_optimal_point(tensor):
     if len(x_coords) == 0:
         return None  # Không tìm thấy điểm nào
 
-    # Bước 2: Lọc tiếp các điểm có giá trị tại (x+1;y) hoặc (x-1;y) bằng 1 hoặc 2
+    # # Bước 2: Lọc tiếp các điểm có giá trị tại (x+1;y) hoặc (x-1;y) bằng 1 hoặc 2
+    # valid_points = []
+    # for i in range(len(x_coords)):
+    #     x, y = x_coords[i], y_coords[i]
+    #     if (x > 0 and (tensor[y, x-1] == 1 or tensor[y, x-1] == 2)) or \
+    #        (x < width-1 and (tensor[y, x+1] == 1 or tensor[y, x+1] == 2)):
+    #         valid_points.append((x, y))
+
+    # Bước 2: Lọc tiếp các điểm
+    # Tạo một mask cho các giá trị bằng 1 hoặc 2
+    mask = (tensor == 1) | (tensor == 2)
+
+    # Tìm tọa độ hợp lệ
     valid_points = []
-    for i in range(len(x_coords)):
-        x, y = x_coords[i], y_coords[i]
-        if (x > 0 and (tensor[y, x-1] == 1 or tensor[y, x-1] == 2)) or \
-           (x < width-1 and (tensor[y, x+1] == 1 or tensor[y, x+1] == 2)):
+    for y, x in zip(y_coords, x_coords):
+        # Kiểm tra các giá trị bên trái và bên phải trong cùng hàng y
+        left_mask = mask[y, :x]  # Lấy các giá trị bên trái 
+        right_mask = mask[y, x+1:]  # Lấy các giá trị bên phải
+        
+        if left_mask.any() and right_mask.any():  # Kiểm tra nếu có giá trị bằng 1 hoặc 2
             valid_points.append((x, y))
     
     if len(valid_points) == 0:
         return None  # Không có điểm thỏa mãn bước 2
-
+    
     # Bước 3: Tìm điểm (x; y) có giá trị (300 - y)^2 + ((200 - x)*2)^2 nhỏ nhất
     min_dist = float('inf')
     best_point = None
     for x, y in valid_points:
-        dist = (300 - y) ** 2 + ((200 - x)*2) ** 2
+        dist = ((400 - y - y_roadmin)) ** 2 + (200 - x) ** 2
         if dist < min_dist:
             min_dist = dist
-            best_point = (x, 400 - y)
+            best_point = (x, 590 - y)
     
     if best_point is not None:
         best_point = (best_point[0].item(), best_point[1].item())
@@ -200,6 +214,7 @@ def find_area_between_points_optimized(labels):
     A = convert_to_xy(A_idx, m)
     B = convert_to_xy(B_idx, m)
     C = convert_to_xy(C_idx, m)
+    y_roadmin = min(B[1], C[1])
     
     # Tìm các phần tử biên
     boundary_indices = find_boundary_neighbors(labels)
@@ -208,7 +223,7 @@ def find_area_between_points_optimized(labels):
     area_AB = calculate_area_optimized(B, A, boundary_indices, m)
     area_AC = calculate_area_optimized(C, A, boundary_indices, m)
 
-    D = find_optimal_point(labels)
+    D = find_optimal_point(labels, y_roadmin)
 
     # number_zero = count_zeros_below_A(A, labels)
     

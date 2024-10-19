@@ -19,7 +19,7 @@ model = SegformerForSemanticSegmentation.from_pretrained(r'D:\IT_2\KTPM\IOT_BACK
 device = 'cuda:0'
 model.to(device).eval()
 
-def inferface_frame(frame, imgsz=(400, 300)):
+def inferface_frame(frame, imgsz=(400, 400)):
     """
     Hàm xử lý một frame và trả về các giá trị A, B, C, D, areaAB, areaAC.
     
@@ -44,14 +44,24 @@ def inferface_frame(frame, imgsz=(400, 300)):
 
     # Sử dụng model để dự đoán nhãn
     labels = predict(model, extractor, frame_rgb, device)
+    print(labels.shape)
     
     # Tìm các tọa độ và diện tích giữa các điểm
     A, B, C, D, areaAB, areaAC = find_area_between_points_optimized(labels)
+
     
     # Tính FPS (Frame Per Second)
     end_time = time.time()
     fps = 1 / (end_time - start_time)
     print(f"FPS: {fps}")
+
+    # Get segmentation map.
+    seg_map = draw_segmentation_map(
+        labels.cpu(), LABEL_COLORS_LIST
+    )
+    outputs = image_overlay(frame, seg_map)
+    cv2.imshow('Image', outputs)
+    cv2.waitKey(1)
     
     # Trả về các giá trị cần thiết
     return A, B, C, D, areaAB, areaAC

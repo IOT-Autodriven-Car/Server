@@ -8,6 +8,9 @@ from datetime import datetime
 
 
 class VideoStreamConsumer(AsyncWebsocketConsumer):
+    last_frame = None
+    x_value = None
+    y_value = None
     async def connect(self):
         await self.accept()
 
@@ -20,17 +23,19 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
             frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
             if frame is not None:
                 print("Frame received successfully")
-                result = self.process_frame(frame)
-
-                if result:
-                    print(f"Sending result: {result}")
-                    await self.send(text_data=json.dumps({'result': result}))
-                else:
-                    await self.send(text_data=json.dumps({'result': None}))
+                self.latest_frame = frame
+                # THE_FRAME = frame.copy()
+                # result = self.process_frame(THE_FRAME)
+                # result_temp = "Hello"
+                # if result_temp:
+                    # print(f"Sending result: {result}")
+                await self.send(text_data=json.dumps({'result': f"{self.x_value},{self.y_value}"}))
+                # else:
+                #     await self.send(text_data=json.dumps({'result': None}))
             else:
                 print("Failed to decode frame")
 
-    def process_frame(self, frame):
+    async def process_frame(self, frame):
         return print(inferface_frame(frame))
 
     # def save_frame_to_image(self, frame):

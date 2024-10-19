@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from channels.generic.websocket import AsyncWebsocketConsumer
+from service.infer_frame import inferface_frame
 import json
 import os
 from datetime import datetime
@@ -30,7 +31,7 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
                 print("Failed to decode frame")
 
     def process_frame(self, frame):
-        return "Hello from server"
+        return print(inferface_frame(frame))
 
     def save_frame_to_image(self, frame):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

@@ -85,6 +85,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+ROOT_URLCONF = 'core.urls'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

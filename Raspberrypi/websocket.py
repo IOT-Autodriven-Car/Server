@@ -29,5 +29,5 @@ async def send_image(uri):
         cap.release()
         cv2.destroyAllWindows()
 
-uri = "ws://localhost:8000"
+uri = "ws://localhost:8000/ws/stream/"
 asyncio.get_event_loop().run_until_complete(send_image(uri))

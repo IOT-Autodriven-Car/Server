@@ -45,4 +45,5 @@ transformers==4.45.2
 typing_extensions==4.12.2
 tzdata==2024.1
 urllib3==2.2.3
+channels==4.1.0
 # torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118

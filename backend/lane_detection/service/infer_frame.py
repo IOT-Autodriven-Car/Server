@@ -56,12 +56,12 @@ def inferface_frame(frame, imgsz=(400, 400)):
     print(f"FPS: {fps}")
 
     # Get segmentation map.
-    seg_map = draw_segmentation_map(
-        labels.cpu(), LABEL_COLORS_LIST
-    )
-    outputs = image_overlay(frame, seg_map)
-    cv2.imshow('Image', outputs)
-    cv2.waitKey(1)
+    # seg_map = draw_segmentation_map(
+    #     labels.cpu(), LABEL_COLORS_LIST
+    # )
+    # outputs = image_overlay(frame, seg_map)
+    # cv2.imshow('Image', outputs)
+    # cv2.waitKey(1)
     
     # Trả về các giá trị cần thiết
     return A, B, C, D, areaAB, areaAC

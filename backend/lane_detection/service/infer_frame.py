@@ -2,20 +2,20 @@ from transformers import (
     SegformerFeatureExtractor, 
     SegformerForSemanticSegmentation
 )
-from config import VIS_LABEL_MAP as LABEL_COLORS_LIST
-from utils import (
+from .config import VIS_LABEL_MAP as LABEL_COLORS_LIST
+from .utils import (
     draw_segmentation_map, 
     image_overlay,
     predict
 )
-from extract_features import find_area_between_points_optimized
+from .extract_features import find_area_between_points_optimized
 
 import cv2
 import time
 
 # Khởi tạo mô hình và extractor bên ngoài hàm để không phải tải lại mỗi khi gọi hàm.
 extractor = SegformerFeatureExtractor()
-model = SegformerForSemanticSegmentation.from_pretrained('./model_iou')
+model = SegformerForSemanticSegmentation.from_pretrained(r'D:\IT_2\KTPM\IOT_BACKEND\Server\backend\lane_detection\service\model_iou')
 device = 'cuda:0'
 model.to(device).eval()
 

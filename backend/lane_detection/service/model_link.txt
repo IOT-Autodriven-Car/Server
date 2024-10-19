@@ -1,3 +1,7 @@
 Download model at https://drive.google.com/drive/folders/16I2PXOwQELP0d3NpUu0bSLaH4dq85cTL?usp=sharing
 then put it into lane_detection/service/model_iou
 Done!
+
+Run code by using:
+- For Image: python infer_image.py --input input/train/images/ --imgsz 400 300 --device cuda
+- For Video: python infer_video.py --input input/inference_data/videos/test2.mov --imgsz 400 300 --device cuda

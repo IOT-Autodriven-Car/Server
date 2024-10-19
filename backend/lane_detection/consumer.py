@@ -57,7 +57,8 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
             
     def process_frame(self):
         self.start_processing_frame = True
-        self.save_frame_to_image(self.last_frame)
+        # self.save_frame_to_image(self.last_frame)
+        print("Hi")
         print(inferface_frame(self.last_frame))
         self.start_processing_frame = False
         return 0

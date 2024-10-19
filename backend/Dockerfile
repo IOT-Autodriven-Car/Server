@@ -15,15 +15,6 @@ RUN apt-get update && apt-get install -y \
     libavcodec-dev \
     libavformat-dev \ 
     libswscale-dev \
-    libtbb2 \
-    libtbb-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libtiff-dev \
-    libjasper-dev \
-    libdc1394-22-dev \
-    libeigen3-dev \
-    libv4l-dev \
     default-libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -32,6 +23,8 @@ RUN pip install --upgrade pip
 
 # Copy the requirements file to the working directory
 COPY ./requirements.txt .
+
+RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt

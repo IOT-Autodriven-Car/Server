@@ -20,6 +20,8 @@ async def send_frames(websocket):
         # Hiện frame (nếu cần)
         # cv2.imshow('Camera', frame)
 
+        await asyncio.sleep(0.1)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -29,8 +31,12 @@ async def send_frames(websocket):
 
 async def receive_response(websocket):
     while True:
-        response = await websocket.recv()
-        print(f"Received: {response}")
+        try:
+            response = await websocket.recv()
+            print(f"Received: {response}")
+        except websockets.exceptions.ConnectionClosed:
+            print("Connection closed")
+            break
 
 
 async def send_image(uri):

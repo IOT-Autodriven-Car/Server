@@ -1,0 +1,3 @@
+Download model at https://drive.google.com/drive/folders/16I2PXOwQELP0d3NpUu0bSLaH4dq85cTL?usp=sharing
+then put it into lane_detection/service/model_iou
+Done!

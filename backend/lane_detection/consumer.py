@@ -57,6 +57,7 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
             
     def process_frame(self):
         self.start_processing_frame = True
+        self.save_frame_to_image(self.last_frame)
         print(inferface_frame(self.last_frame))
         self.start_processing_frame = False
         return 0
@@ -65,7 +66,7 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
     #     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     #     filename = f"frame_{timestamp}.jpg"
 
-    #     save_dir = r"/home/vinhnado/Dev/IOT/Server/backend/lane_detection/img"
+    #     save_dir = r"D:\IT_2\KTPM\IOT_BACKEND\Server\backend\lane_detection\service\outputs\images"
     #     os.makedirs(save_dir, exist_ok=True)
 
     #     save_path = os.path.join(save_dir, filename)

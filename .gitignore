@@ -7,4 +7,4 @@ docker.env
 oidc.key
 debug.log
 .vscode
-backend/lane_detection/service/model_iou
+backend/lane_detection/service/model_iou/pytorch_model.bin

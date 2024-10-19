@@ -44,7 +44,7 @@ def inferface_frame(frame, imgsz=(400, 400)):
 
     # Sử dụng model để dự đoán nhãn
     labels = predict(model, extractor, frame_rgb, device)
-    print(labels.shape)
+    # print(labels.shape)
     
     # Tìm các tọa độ và diện tích giữa các điểm
     A, B, C, D, areaAB, areaAC = find_area_between_points_optimized(labels)

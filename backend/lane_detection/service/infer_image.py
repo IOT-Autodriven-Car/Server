@@ -2,8 +2,8 @@ from transformers import (
     SegformerFeatureExtractor, 
     SegformerForSemanticSegmentation
 )
-from config import VIS_LABEL_MAP as LABEL_COLORS_LIST
-from utils import (
+from .config import VIS_LABEL_MAP as LABEL_COLORS_LIST
+from .utils import (
     draw_segmentation_map, 
     image_overlay,
     predict
@@ -16,7 +16,7 @@ import glob
 import time
 # from extract_point_locate import find_area_between_points
 # import extract_features
-from extract_features import find_area_between_points_optimized
+from .extract_features import find_area_between_points_optimized
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

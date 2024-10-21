@@ -74,7 +74,6 @@ def find_optimal_point(tensor, y_roadmin = 0):
         ((tensor[2:-1, :] == 1) | (tensor[2:-1, :] == 2))
     )
 
-
     # Tọa độ thỏa mãn điều kiện bước 1
     y_coords, x_coords = torch.nonzero(condition_1, as_tuple=True)
     
@@ -113,7 +112,7 @@ def find_optimal_point(tensor, y_roadmin = 0):
         dist = ((400 - y - y_roadmin)) ** 2 + (200 - x) ** 2
         if dist < min_dist:
             min_dist = dist
-            best_point = (x, 590 - y)
+            best_point = (x, 400 - y)
     
     if best_point is not None:
         best_point = (best_point[0].item(), best_point[1].item())

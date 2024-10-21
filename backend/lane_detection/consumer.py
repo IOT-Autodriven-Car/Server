@@ -13,6 +13,12 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
     last_frame = None
     x_value = 0
     y_value = 0
+    A = None
+    B = None
+    C = None
+    D = None
+    areaAB = None
+    areaAC = None
     start_processing_frame = False
 
     async def connect(self):
@@ -41,7 +47,9 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
             np_arr = np.frombuffer(bytes_data, np.uint8)
             self.last_frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
             print("Frame received successfully")
-            await self.send(text_data=json.dumps({'result': f"{self.x_value},{self.y_value}"}))
+            # await self.send(text_data=json.dumps({'result': f"Image features:{self.A},{self.B},{self.C},{self.D},{self.areaAB},{self.areaAC}; Car Drive value:{self.x_value},{self.y_value}"}))
+            await self.send(text_data=json.dumps({'Result': f"Image features:{self.A},{self.B},{self.C},{self.D},{self.areaAB},{self.areaAC}"}))
+
             
             thread1 = threading.Thread(target=self.process_frame)
             
@@ -60,7 +68,7 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
         # self.save_frame_to_image(self.last_frame)
         print("Hi")
         try:
-            print(inferface_frame(self.last_frame))
+            self.A, self.B, self.C, self.D, self.areaAB, self.areaAC =  inferface_frame(self.last_frame)
         except Exception as e:
             print(e)
         self.start_processing_frame = False

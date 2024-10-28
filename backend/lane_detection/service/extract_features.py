@@ -165,7 +165,8 @@ def calculate_area_optimized(A, B, boundary_indices, m):
     boundary_y = m - 1 - boundary_indices[:, 0].float()  # Chuyển về hệ trục Oxy
 
     # Chỉ giữ các điểm nằm trong khoảng y từ A đến B
-    valid_mask = (boundary_y >= A[1]) & (boundary_y <= B[1])
+    valid_mask = (boundary_y <= A[1]) & (boundary_y >= B[1]) & \
+                 (boundary_x >= min(A[0], B[0])) & (boundary_x <= max(A[0], B[0]))
     boundary_x = boundary_x[valid_mask]
     boundary_y = boundary_y[valid_mask]
     

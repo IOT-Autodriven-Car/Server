@@ -4,7 +4,7 @@ import websockets
 
 
 async def send_frames(websocket):
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     while True:
         ret, frame = cap.read()

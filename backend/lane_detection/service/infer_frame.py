@@ -15,7 +15,7 @@ import time
 
 # Khởi tạo mô hình và extractor bên ngoài hàm để không phải tải lại mỗi khi gọi hàm.
 extractor = SegformerFeatureExtractor()
-model = SegformerForSemanticSegmentation.from_pretrained(r'D:\IT_2\KTPM\IOT_BACKEND\Server\backend\lane_detection\service\model_iou')
+model = SegformerForSemanticSegmentation.from_pretrained(r'C:\Users\vinhn\OneDrive\Máy tính\Dev\Server\backend\lane_detection\service\model_iou')
 device = 'cuda:0'
 model.to(device).eval()
 

@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 import threading
 
+from .traffic_sign_detection.predict import predict_on_frame
 
 
 class VideoStreamConsumer(AsyncWebsocketConsumer):
@@ -20,6 +21,9 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
     areaAB = None
     areaAC = None
     start_processing_frame = False
+
+    traffic_sign = None
+    traffic_sign_frame = False
 
     async def connect(self):
         await self.accept()
@@ -48,13 +52,14 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
             self.last_frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
             print("Frame received successfully")
             # await self.send(text_data=json.dumps({'result': f"Image features:{self.A},{self.B},{self.C},{self.D},{self.areaAB},{self.areaAC}; Car Drive value:{self.x_value},{self.y_value}"}))
-            await self.send(text_data=json.dumps({'Result': f"Image features:{self.A},{self.B},{self.C},{self.D},{self.areaAB},{self.areaAC}"}))
-
+            await self.send(text_data=json.dumps({'Result': f"Image features:{self.A},{self.B},{self.C},{self.D},{self.areaAB},{self.areaAC}, Traffic sign: {self.traffic_sign}"}))
             
             thread1 = threading.Thread(target=self.process_frame)
+            thread2 = threading.Thread(target=self.process_traffic_sign_detect)
             
             if self.start_processing_frame == False:
                 thread1.start()
+                thread2.start()
             # thread2.start()
             # thread1.join()
 
@@ -74,16 +79,11 @@ class VideoStreamConsumer(AsyncWebsocketConsumer):
         self.start_processing_frame = False
         return 0
 
-    # def save_frame_to_image(self, frame):
-    #     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    #     filename = f"frame_{timestamp}.jpg"
-
-    #     save_dir = r"D:\IT_2\KTPM\IOT_BACKEND\Server\backend\lane_detection\service\outputs\images"
-    #     os.makedirs(save_dir, exist_ok=True)
-
-    #     save_path = os.path.join(save_dir, filename)
-
-    #     cv2.imwrite(save_path, frame)
-
-    #     print(f"Frame saved to {save_path}")
-    #     return save_path
+    def process_traffic_sign_detect(self):
+        self.start_processing_frame = True
+        try:
+            self.traffic_sign, self.traffic_sign_frame =  predict_on_frame(self.last_frame)
+        except Exception as e:
+            print(e)
+        self.start_processing_frame = False
+        return 0

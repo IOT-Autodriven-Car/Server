@@ -96,19 +96,27 @@ ROOT_URLCONF = 'core.urls'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 DB_NAME = os.environ["DB_NAME"] if "DB_NAME" in os.environ else env("DB_NAME")
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         "NAME": DB_NAME,
+#         "USER": os.environ["DB_USER"] if "DB_USER" in os.environ else env("DB_USER"),
+#         "PASSWORD": (
+#             os.environ["DB_PASSWORD"]
+#             if "DB_PASSWORD" in os.environ
+#             else env("DB_PASSWORD")
+#         ),
+#         "HOST": os.environ["DB_HOST"] if "DB_HOST" in os.environ else env("DB_HOST"),
+#         "PORT": os.environ["DB_PORT"] if "DB_PORT" in os.environ else env("DB_PORT"),
+#         "OPTIONS": {"charset": "utf8mb4"},
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        "NAME": DB_NAME,
-        "USER": os.environ["DB_USER"] if "DB_USER" in os.environ else env("DB_USER"),
-        "PASSWORD": (
-            os.environ["DB_PASSWORD"]
-            if "DB_PASSWORD" in os.environ
-            else env("DB_PASSWORD")
-        ),
-        "HOST": os.environ["DB_HOST"] if "DB_HOST" in os.environ else env("DB_HOST"),
-        "PORT": os.environ["DB_PORT"] if "DB_PORT" in os.environ else env("DB_PORT"),
-        "OPTIONS": {"charset": "utf8mb4"},
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase', # This is where you put the name of the db file.
+                 # If one doesn't exist, it will be created at migration time.
     }
 }
 

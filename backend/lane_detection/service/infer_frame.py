@@ -3,6 +3,7 @@ from transformers import (
     SegformerForSemanticSegmentation
 )
 from .config import VIS_LABEL_MAP as LABEL_COLORS_LIST
+import os
 from .utils import (
     draw_segmentation_map, 
     image_overlay,
@@ -15,7 +16,10 @@ import time
 
 # Khởi tạo mô hình và extractor bên ngoài hàm để không phải tải lại mỗi khi gọi hàm.
 extractor = SegformerFeatureExtractor()
-model = SegformerForSemanticSegmentation.from_pretrained(r'C:\Users\vinhn\OneDrive\Máy tính\Dev\Server\backend\lane_detection\service\model_iou')
+current_directory = os.path.dirname(os.path.abspath(__file__))
+model_iou_directory = os.path.join(current_directory, 'model_iou')
+
+model = SegformerForSemanticSegmentation.from_pretrained(model_iou_directory)
 device = 'cuda:0'
 model.to(device).eval()
 

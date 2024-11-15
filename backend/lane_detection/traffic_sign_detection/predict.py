@@ -17,7 +17,7 @@ def predict_on_frame(frame):
     if frame.shape[0] != 640 or frame.shape[1] != 640:
         frame = cv2.resize(frame, (640, 640))
 
-    result = model.predict(frame, imgsz=640, conf=0.5, device = "cpu")
+    result = model.predict(frame, imgsz=640, conf=0.5, device = "cuda:0")
     boxes = result[0].boxes  # Bounding boxes
 
     print("Boxes:", boxes)
